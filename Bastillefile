@@ -1,3 +1,3 @@
 ARG drupal-version=latest
 ARG db-server=mariadb
-ARG db-version=mariadb106-server-10.6.11
+ARG db-version=106
