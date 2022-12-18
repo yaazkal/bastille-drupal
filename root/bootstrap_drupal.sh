@@ -13,7 +13,7 @@ if [ "${PHP_VERSION}" != "82" ]; then
   exit 1
 fi
 
-echo "[INFO] Downloading drupal ${drupal-version}"
+echo "[INFO] Downloading Drupal ${drupal-version}"
 if [ "${DRUPAL_VERSION}" = 'latest' ]; then
   fetch -o "${DRUPAL_TAR}" -q https://www.drupal.org/download-latest/tar.gz
 else
@@ -23,6 +23,7 @@ fi
 
 echo "[INFO] Extracting Drupal in ${DEST_PATH}"
 tar -C "${DEST_PATH}" --strip-components 1 -xzf "${DRUPAL_TAR}"
+chown -R www:www "${DEST_PATH}/sites/default"
 
 case "${DB_SERVER}" in
   mariadb|mysql)
