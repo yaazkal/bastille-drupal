@@ -1,3 +1,17 @@
 ARG drupal-version=latest
 ARG db-server=mariadb
-ARG db-version=106
+ARG php-version=82
+
+CMD mkdir -p /usr/local/www/drupal
+CP usr /
+OVERLAY root
+RENDER root/bootstrap_drupal.sh
+CMD /root/bootstrap_drupal.sh
+PKG nginx php${php-version}-tokenizer php${php-version}-dom php${php-version}-filter php${php-version}-gd php${php-version}-session php${php-version}-simplexml php${php-version}-xml php${php-version}-mbstring php${php-version}-opcache
+CMD sed -i '' -e 's|listen.*=.*9000|listen = /var/run/php-fpm.sock|g' /usr/local/etc/php-fpm.d/www.conf
+CMD sed -i '' -e 's|;listen\.owner.*=.*www|listen.owner = www|g' /usr/local/etc/php-fpm.d/www.conf
+CMD sed -i '' -e 's|;listen\.group.*=.*www|listen.group = www|g' /usr/local/etc/php-fpm.d/www.conf
+SYSRC php_fpm_enable=YES
+SYSRC nginx_enable=YES
+SERVICE php-fpm restart
+SERVICE nginx restart
